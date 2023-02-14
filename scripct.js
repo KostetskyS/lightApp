@@ -51,15 +51,13 @@ function createTable(){
 		
 		tr.appendChild(td3);
 		
-		// table.appendChild(tr);
-
 
 		let td4 = document.createElement('td');
 		let button = document.createElement('button')
 
 		button.textContent = 'edit'
 		button.addEventListener('click', function() {
-			// на модалке
+			
 			openModal();
 
 			const editBut = document.querySelector('.editBut');
@@ -70,11 +68,10 @@ function createTable(){
 				td1.textContent = nameTake.value;
 				td2.textContent = ipTake.value;
 				closeModal()
-				// modal.style.display = "none";
+				
 			})
 			delBut.addEventListener('click', function(event){
-				// tr.remove();
-				// modal.style.display = "none";
+				
 				const filteredUsersArr = users.filter(filteredUser => filteredUser.id !== user.id);
 				users = filteredUsersArr;
 				createTable();
@@ -126,13 +123,13 @@ const span = document.getElementsByClassName("close")[0];
 
 
 span.addEventListener('click', function() {
-    // modal.style.display = "none";
+    
 	closeModal();
 }) 
 
 window.addEventListener('click', function(event) {
     if (event.target == modal) {
-    // modal.style.display = "none";
+    
 	closeModal();
     }
 })
@@ -143,41 +140,19 @@ const delBut = document.querySelector('.delBut');
 
 
 saveBut.addEventListener('click', function() {
-	 // editedUserId - это переменная которую нужно дабавить
- // в ней ты хранишь id юзера которого меняешь
-//  users.forEach((user) =>
-// {
-//  console.log(user, "user");
-//  console.log(editedUserId, "editedUserId");
+			// editedUserId - это переменная которую нужно дабавить
+		// в ней ты хранишь id юзера которого меняешь
+		//  users.forEach((user) =>
+		// {
+		//  console.log(user, "user");
+		//  console.log(editedUserId, "editedUserId");
 addUser();
 	ipTake.value = '';
 	nameTake.value = '';
-	// modal.style.display = "none";
+	
 	closeModal();
 })
-//  const userToUpdate = users.find((user) => user.id === editedUserId)
-// 	userToUpdate.name = nameTake;
-// 	userToUpdate.ip = ipTake;
- 
- // перерисовать таблицу
- 
-// 	modal.style.display = "none";
-	
-// })
 
-const colors = {
-	available: {
-	 textColor: "ffffff",
-	 gradientStartColor: "48d420",
-	 gradientEndColor: "41961b",
-	},
-	notAvailable: {
-	 textColor: "f0f0f0",
-	 gradientStartColor: "9c2424",
-	 gradientEndColor: "661414",
-	},
-   };
-   
    async function isAvailable() {
 	let request = new Request(`https://vadimklimenko.com/ping/?ip=${myIP}`);
 	request.headers = { Accept: "application/json" };
@@ -185,7 +160,6 @@ const colors = {
 	let response = await request.loadJSON();
 	console.log(response);
    
-	// Scriptable will throw an error to widget in case of internet issues
 	return [response.status == "ok", response.error];
    }
    
