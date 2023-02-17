@@ -1,11 +1,13 @@
 'use strict';
-const table = document.querySelector('#table');
-const addButton = document.querySelector('#add');
-const refreshButton = document.querySelector('#refresh');
+
+const addBtn = document.querySelector('#addBtn');
+const refreshBtn = document.querySelector('#refreshBtn');
 const nameTake = document.querySelector('.nameTake');
 const ipTake = document.querySelector('.ipTake');
-const myIP = "176.38.27.137";
-	
+const modalAddBtn = document.querySelector('.modalAdd');
+const modalDelBtn = document.querySelector('.modalDelBtn');
+const modalEditBtn = document.querySelector('.modalEditBtn');
+
 let users = [
 		{
 		name: 'Димочка',
@@ -27,15 +29,14 @@ let users = [
 	   },
 ];
 
-const openModal = () => modal.style.display = "block"
+const openModal = () => modal.style.display = "block" 
 const closeModal = () => modal.style.display = "none"
 
 function createTable(){
 	const tbody = document.querySelector('tbody');
 	tbody.innerHTML = '';
-
+	
 	for (let user of users) {
-		console.log(user, "user");
 		let tr = document.createElement('tr');
 		
 		let td1 = document.createElement('td');
@@ -51,36 +52,34 @@ function createTable(){
 		
 		tr.appendChild(td3);
 		
-
 		let td4 = document.createElement('td');
-		let button = document.createElement('button')
+		let editBtn = document.createElement('button')
 
-		button.textContent = 'edit'
-		button.addEventListener('click', function() {
-			
+		editBtn.textContent = 'edit'
+		
+		editBtn.addEventListener('click', function editUser() {
+			modalEditBtn.style.display = 'block';
 			openModal();
-
-			const editBut = document.querySelector('.editBut');
-			const delButon = document.querySelector('.delBut');
-			
-			
-			editBut.addEventListener('click', function(event){
-				td1.textContent = nameTake.value;
-				td2.textContent = ipTake.value;
+			modalAddBtn.style.display = 'none';
+			modalEditBtn.onclick = function editUser(){
+				user.name = nameTake.value;
+				user.ip = ipTake.value;
+				createTable();
 				closeModal()
-				
-			})
-			delBut.addEventListener('click', function(event){
-				
+				ipTake.value = '';
+				nameTake.value = '';
+			}
+			modalDelBtn.onclick = function delUser(){
 				const filteredUsersArr = users.filter(filteredUser => filteredUser.id !== user.id);
 				users = filteredUsersArr;
 				createTable();
 				closeModal();
-			})
+				
+			}
 			
 		})
 
-		td4.appendChild(button);
+		td4.appendChild(editBtn);
 		
 		tr.appendChild(td4);
 		
@@ -92,18 +91,19 @@ function createTable(){
 createTable();
 
 function addUser() {
-	// получаем айдишники всех юзеров
+
 	const usersIds = users.map(user => user.id);
 
-	// эту строку перепиши
-	const uniqId = Math.max(...usersIds) + 1;
-	
-	console.log(uniqId, "uniqId");
-
+	let uniqId = 0;
+	usersIds.forEach(function (elem, index) {
+	 if(uniqId < elem){
+	  uniqId = elem;
+	 }
+	});
 
 	let user = new Object();
 		for (let i = 0; i <= 4; i++) {
-			user.id = uniqId;
+			user.id = uniqId +1;
 			user.name = nameTake.value;
 			user.ip = ipTake.value;
 			user.status = 'Status';
@@ -112,71 +112,32 @@ function addUser() {
 	createTable()
 }
 
-addButton.addEventListener('click', function() {
-	modal.style.display = "block";
+addBtn.addEventListener('click', function() {
+	modalEditBtn.style.display = 'none';
+	modalAddBtn.style.display = 'block';
+	openModal();
 	
 })
 
 const modal = document.getElementById('myModal');
-
 const span = document.getElementsByClassName("close")[0];
 
-
 span.addEventListener('click', function() {
-    
 	closeModal();
 }) 
 
 window.addEventListener('click', function(event) {
     if (event.target == modal) {
-    
 	closeModal();
     }
 })
 
-
-const saveBut = document.querySelector('.saveBut');
-const delBut = document.querySelector('.delBut');
-
-
-saveBut.addEventListener('click', function() {
-			// editedUserId - это переменная которую нужно дабавить
-		// в ней ты хранишь id юзера которого меняешь
-		//  users.forEach((user) =>
-		// {
-		//  console.log(user, "user");
-		//  console.log(editedUserId, "editedUserId");
+modalAddBtn.addEventListener('click', function() {
+	
 addUser();
 	ipTake.value = '';
 	nameTake.value = '';
-	
 	closeModal();
 })
 
-   async function isAvailable() {
-	let request = new Request(`https://vadimklimenko.com/ping/?ip=${myIP}`);
-	request.headers = { Accept: "application/json" };
-   
-	let response = await request.loadJSON();
-	console.log(response);
-   
-	return [response.status == "ok", response.error];
-   }
-   
-   
-//    async function run() {
-// 	const listWidget = new ListWidget();
-   
-// 	const [isWifiAvailable, errorText] = await isAvailable();
-// 	const activeColors = colors[isWifiAvailable ? "available" : "notAvailable"];
-// 	const { textColor } = activeColors;
-   
-// 	if (config.runsInApp) {
-// 	 listWidget.presentMedium();
-// 	}
-   
-// 	Script.setWidget(listWidget);
-// 	Script.complete();
-//    }
-   
-//    await run();
+ 

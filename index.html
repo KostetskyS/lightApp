@@ -12,11 +12,14 @@
    
         <table id="table"> 
              <thead>
+
                     <th>Name</th>
                     <th>IP address</th>
                     <th>Status</th>
                     <th>Action</th>
-                </thead>
+
+              </thead>
+
                 <tbody> 
 
                 </tbody>
@@ -24,32 +27,32 @@
 
         <div id="buttons">  
      
-            <button id="add">Add</button>
-            <button id="refresh">Refresh</button></div>
+            <button id="addBtn">Add</button>
+            <button id="refreshBtn">Refresh</button>
+        </div>
             
-            
+        <div id="myModal" class="modal">
 
+          <div class="modal-content">
+            <div class="modal-header">
 
-<div id="myModal" class="modal">
+              <span class="close">&times;</span>
+              <h2>Введите данные пользователя</h2>
 
- 
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>Введите данные пользователя</h2>
-    </div>
-    <div class="modal-body">
-      <input value="" placeholder="Введите имя" class="nameTake" type="text">
-      <input value="" placeholder="Введите IP" class="ipTake" type="text">
-    </div>
-    <div class="editBut"> 
-      <button class="saveBut">ADD</button>
-      <button class="editBut">Edit</button>
-      <button class="delBut">Delete</button>
-    </div>
-      
-  </div>
-</div>
+            </div>
+              <div class="modal-body">
+
+                <input value="" placeholder="Введите имя" class="nameTake" type="text">
+                 <input value="" placeholder="Введите IP" class="ipTake" type="text">
+
+              </div>
+                  <div class="modalBtns"> 
+                    <button class="modalAdd">ADD</button>
+                    <button class="modalEditBtn">Edit</button>
+                    <button class="modalDelBtn">Delete</button>
+                  </div> 
+          </div>
+        </div>
     </div>
 
 <script src="scripct.js?v=1"></script>
