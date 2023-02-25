@@ -10,20 +10,20 @@ const modalEditBtn = document.querySelector('.modalEditBtn');
 
 let users = [
 		{
-		name: 'Димочка',
-		ip: 'ip-address',
+		name: 'Сережа',
+		ip: '176.38.27.137',
 		status: 'status',
 		id: 0
 	   },
 	   {
 		name: 'Ваня',
-		ip: 'ip-address',
+		ip: '176.36.194.218',
 		status: 'status',
 		id: 1
 	   },
 	   {
-		name: 'Кирилл',
-		ip: 'ip-address',
+		name: 'Димочка',
+		ip: '194.37.98.102',
 		status: 'status',
 		id: 2
 	   },
@@ -49,6 +49,12 @@ function createTable(){
 		
 		let td3 = document.createElement('td');
 		td3.textContent = user.status;
+		if (td3.textContent == 'Света нет') {
+			td3.style.color= 'red';
+		} 
+		if (td3.textContent == 'Свет есть') {
+			td3.style.color= 'green';
+		} 
 		
 		tr.appendChild(td3);
 		
@@ -62,6 +68,15 @@ function createTable(){
 			openModal();
 			modalAddBtn.style.display = 'none';
 			modalEditBtn.onclick = function editUser(){
+				let space = /^[\s]+$/;
+				if ((nameTake.value == '' || ipTake.value == '')) {
+					alert('Заполни данные')
+					return
+				}
+				if ((nameTake.value == space.test(String) || ipTake.value == space.test(String))) {
+					alert('Нормально заполни')
+					return
+				}
 				user.name = nameTake.value;
 				user.ip = ipTake.value;
 				createTable();
@@ -91,7 +106,6 @@ function createTable(){
 createTable();
 
 function addUser() {
-
 	const usersIds = users.map(user => user.id);
 
 	let uniqId = 0;
@@ -103,6 +117,21 @@ function addUser() {
 
 	let user = new Object();
 		for (let i = 0; i <= 4; i++) {
+			let space = /^[\s]+$/;
+			let pattern = document.querySelector('pattern');
+			if ((nameTake.value == '' || ipTake.value == '')) {
+				alert('Заполни данные')
+				return
+			}
+			if ((nameTake.value == space.test(String) || ipTake.value == space.test(String))) {
+				alert('Нормально заполни')
+				return
+			}
+			if (ipTake.value.match(pattern)) {
+				alert('Нормально заполни')
+				return
+			}
+			
 			user.id = uniqId +1;
 			user.name = nameTake.value;
 			user.ip = ipTake.value;
@@ -138,6 +167,31 @@ addUser();
 	ipTake.value = '';
 	nameTake.value = '';
 	closeModal();
-})
+});
 
- 
+async function oneUserCheckLight (user) {
+	const request = await fetch('https://steakovercooked.com/api/ping/?' + new URLSearchParams({
+			host: user.ip
+		}));
+		const response = await request.json();
+		if (response !== null) {
+			user.status = 'Свет есть';
+		} 
+		else {
+			user.status = 'Света нет';
+		} 
+		
+}
+
+async function checkLight() {
+	let promises = [];
+	for (let user of users) {
+		const promise = oneUserCheckLight(user);
+		promises.push(promise);
+	}
+	await Promise.all(promises)
+	createTable();
+}
+checkLight()
+
+refreshBtn.addEventListener('click', checkLight);
